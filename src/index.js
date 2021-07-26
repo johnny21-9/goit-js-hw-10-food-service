@@ -27,15 +27,18 @@ const Theme = {
 switchRef.addEventListener('change', onSwitchChange);
 
 
-let currentTheme = localStorage.getItem('class'); //определяем текущую тему в Local Storage
+let currentTheme;
+LocalStorageCurrentThemeCheck(); //определяем текущую тему в Local Storage
 
 // Проверяем при загрузке страницы тему в Local Storage и применяем ее (учитывая чекбокс)
 
 function themeCheck() {
     if (currentTheme === Theme.DARK) {
         switchRef.checked = true;
-    } else if (currentTheme === null) {
+    } else if (localStorage.getItem('class') === null) {
         localStorage.setItem('class', Theme.LIGHT);
+        LocalStorageCurrentThemeCheck();
+        // bodyRef.classList.add(currentTheme);
     }
     themeChange()
 };
@@ -50,10 +53,9 @@ function onSwitchChange(event) {
     };
 
     //переопределяем переменную чтобы узнать текущую тему после события
-    currentTheme = localStorage.getItem('class');
+    LocalStorageCurrentThemeCheck();
 
     themeChange()
-    console.log(currentTheme);
 }
 
 //Убираем все классы с body и применяем нужную тему
@@ -64,4 +66,6 @@ function themeChange() {
     bodyRef.classList.add(currentTheme);
 }
 
-
+function LocalStorageCurrentThemeCheck() {
+    currentTheme = localStorage.getItem('class');
+}
